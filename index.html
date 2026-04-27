@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,153 +5,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>競輪予想サーチ Pro</title>
     <style>
-        :root {
-            --primary-color: #ff6b00;
-            --secondary-color: #1a2a3a;
-            --bg-gradient: linear-gradient(135deg, #1a2a3a 0%, #34495e 100%);
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', sans-serif;
-            background: var(--bg-gradient);
-            margin: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #1a2a3a;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            color: #fff;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
-
         .container {
-            background: rgba(255, 255, 255, 0.98);
+            background-color: white;
+            border-radius: 30px;
             padding: 40px 30px;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 400px;
-            width: 90%;
+            width: 100%;
+            max-width: 360px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             text-align: center;
-            color: #333;
         }
-
-        h2 {
-            font-size: 22px;
+        h1 {
+            font-size: 24px;
+            color: #1a2a3a;
             margin-bottom: 30px;
-            color: var(--secondary-color);
         }
-
-        .input-group {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-
         label {
-            font-weight: bold;
             display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
+            text-align: left;
+            font-weight: bold;
             color: #666;
+            margin-bottom: 10px;
+            font-size: 14px;
         }
-
+        .select-wrapper {
+            margin-bottom: 25px;
+            position: relative;
+        }
         select {
             width: 100%;
             padding: 15px;
-            font-size: 16px;
             border: 2px solid #eee;
-            border-radius: 12px;
-            background: #f8f9fa;
+            border-radius: 15px;
+            font-size: 16px;
             appearance: none;
-            -webkit-appearance: none;
-            cursor: pointer;
+            background-color: #f9f9f9;
+            color: #333;
         }
-
-        .select-wrapper { position: relative; }
-        .select-wrapper::after {
-            content: '▼';
-            font-size: 12px;
-            color: #999;
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-        }
-
         button {
-            width: 100%;
-            margin-top: 20px;
-            padding: 18px;
-            background: var(--primary-color);
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
             color: white;
             border: none;
+            padding: 18px;
             border-radius: 50px;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(255, 107, 0, 0.3);
+            width: 100%;
+            box-shadow: 0 10px 20px rgba(255, 126, 95, 0.3);
+            margin-top: 10px;
+            transition: transform 0.2s;
         }
-
+        button:active {
+            transform: scale(0.98);
+        }
         .footer-text {
-            margin-top: 20px;
             font-size: 11px;
             color: #999;
+            margin-top: 15px;
+        }
+        .note-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #eee;
+        }
+        .note-link {
+            color: #2cb696;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .copyright {
+            font-size: 10px;
+            color: #bbb;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h2>🚴 競輪予想サーチ Pro</h2>
-    <div class="input-group">
-        <label>開催地を選択</label>
-        <div class="select-wrapper"><select id="track"></select></div>
-    </div>
+    <h1>🚴‍♂️ 競輪予想サーチ Pro</h1>
     
-</div>
-
+    <label>開催地を選択</label>
+    <div class="select-wrapper">
+        <select id="track"></select>
     </div>
-    <button onclick="search()">𝕏 でリアルタイム予想を探す</button>
-    <button onclick="search()">𝕏 でリアルタイム予想を探す</button>
-<p class="footer-text">※最新の出走表と照らし合わせてご確認ください</p>
 
-<div style="margin-top: 25px; padding-top: 15px; border-top: 1px dashed #eee; text-align: center;">
-    <p style="font-size: 12px; color: #888; margin-bottom: 8px;">
-        数値から展開を読み解く「管理者の目線」
-    </p>
-    <a href="https://note.com/deep_lilac7083" target="_blank" style="
-        color: #2cb696;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 14px;
-        display: inline-block;
-    ">
-        公式note: deep_lilac7083
-    </a>
-    <p style="font-size: 10px; color: #bbb; margin-top: 12px;">
-        &copy; 2024 Keirin Prediction Tool
-    </p>
+    <label>レース番号</label>
+    <div class="select-wrapper">
+        <select id="race">
+            <option value="1R">1R</option>
+            <option value="2R">2R</option>
+            <option value="3R">3R</option>
+            <option value="4R">4R</option>
+            <option value="5R">5R</option>
+            <option value="6R">6R</option>
+            <option value="7R">7R</option>
+            <option value="8R">8R</option>
+            <option value="9R">9R</option>
+            <option value="10R">10R</option>
+            <option value="11R">11R</option>
+            <option value="12R">12R</option>
+        </select>
+    </div>
+
+    <button onclick="search()">𝕏 でリアルタイム予想を探す</button>
+    <p class="footer-text">※最新の出走表と照らし合わせてご確認ください</p>
+
+    <div class="note-section">
+        <p style="font-size: 12px; color: #888; margin-bottom: 8px;">数値から展開を読み解く「管理者の目線」</p>
+        <a href="https://note.com/deep_lilac7083" target="_blank" class="note-link">公式note: deep_lilac7083</a>
+        <p class="copyright">&copy; 2024 Keirin Prediction Tool</p>
+    </div>
 </div>
 
-</div> <script>
 <script>
-const tracks = ["函館", "青森", "いわき平", "弥彦", "前橋", "取手", "宇都宮", "大宮", "西武園", "京王閣", "立川", "松戸", "千葉", "川崎", "平塚", "小田原", "伊東", "静岡", "名古屋", "岐阜", "大垣", "豊橋", "富山", "松阪", "四日市", "福井", "奈良", "向日町", "和歌山", "岸和田", "玉野", "広島", "防府", "高松", "小松島", "高知", "松山", "小倉", "久留米", "武雄", "佐世保", "別府", "熊本"];
-function init() {
-    const trackSelect = document.getElementById("track");
-    tracks.sort().forEach(t => {
-        const o = document.createElement("option"); o.value = t; o.textContent = t; trackSelect.appendChild(o);
-    });
-    const raceSelect = document.getElementById("race");
-    for (let i = 1; i <= 12; i++) {
-        const o = document.createElement("option"); o.value = i; o.textContent = i + "R"; raceSelect.appendChild(o);
+    const tracks = ["函館", "青森", "いわき平", "弥彦", "前橋", "取手", "宇都宮", "大宮", "西武園", "京王閣", "立川", "松戸", "千葉", "川崎", "平塚", "小田原", "伊東", "静岡", "名古屋", "岐阜", "大垣", "豊橋", "富山", "松阪", "四日市", "福井", "奈良", "向日町", "和歌山", "岸和田", "玉野", "広島", "防府", "高松", "小松島", "松山", "高知", "小倉", "久留米", "武雄", "佐世保", "別府", "熊本"];
+    
+    function init() {
+        const trackSelect = document.getElementById("track");
+        tracks.sort().forEach(t => {
+            const o = document.createElement("option");
+            o.value = t; o.textContent = t; trackSelect.appendChild(o);
+        });
     }
-}
-document.addEventListener("DOMContentLoaded", init);
-function search() {
-    const track = document.getElementById("track").value;
-    const race = document.getElementById("race").value;
-    const query = `${track}競輪 ${race}R 予想`;
-    window.open(`https://twitter.com/search?q=${encodeURIComponent(query)}&f=live`, "_blank");
-}
 
+    function search() {
+        const track = document.getElementById("track").value;
+        const race = document.getElementById("race").value;
+        const query = encodeURIComponent(`${track}競輪 ${race} 予想`);
+        window.open(`https://twitter.com/search?q=${query}&f=live`, '_blank');
+    }
 
+    init();
+</script>
 
 </body>
 </html>
+
