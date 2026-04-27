@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>競輪予想サーチ Pro</title>
+    <style>
+        :root {
+            --primary-color: #ff6b00;
+            --secondary-color: #1a2a3a;
+            --bg-gradient: linear-gradient(135deg, #1a2a3a 0%, #34495e 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', sans-serif;
+            background: var(--bg-gradient);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 22px;
+            margin-bottom: 30px;
+            color: var(--secondary-color);
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            background: #f8f9fa;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .select-wrapper { position: relative; }
+        .select-wrapper::after {
+            content: '▼';
+            font-size: 12px;
+            color: #999;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 18px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 107, 0, 0.3);
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 11px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>🚴 競輪予想サーチ Pro</h2>
+    <div class="input-group">
+        <label>開催地を選択</label>
+        <div class="select-wrapper"><select id="track"></select></div>
+    </div>
+    <div class="input-group">
+        <label>レース番号</label>
+        <div class="select-wrapper"><select id="race"></select></div>
+    </div>
+    <button onclick="search()">𝕏 でリアルタイム予想を探す</button>
+    <p class="footer-text">※最新の出走表と照らし合わせてご確認ください</p>
+</div>
+
+<script>
+const tracks = ["函館", "青森", "いわき平", "弥彦", "前橋", "取手", "宇都宮", "大宮", "西武園", "京王閣", "立川", "松戸", "千葉", "川崎", "平塚", "小田原", "伊東", "静岡", "名古屋", "岐阜", "大垣", "豊橋", "富山", "松阪", "四日市", "福井", "奈良", "向日町", "和歌山", "岸和田", "玉野", "広島", "防府", "高松", "小松島", "高知", "松山", "小倉", "久留米", "武雄", "佐世保", "別府", "熊本"];
+function init() {
+    const trackSelect = document.getElementById("track");
+    tracks.sort().forEach(t => {
+        const o = document.createElement("option"); o.value = t; o.textContent = t; trackSelect.appendChild(o);
+    });
+    const raceSelect = document.getElementById("race");
+    for (let i = 1; i <= 12; i++) {
+        const o = document.createElement("option"); o.value = i; o.textContent = i + "R"; raceSelect.appendChild(o);
+    }
+}
+document.addEventListener("DOMContentLoaded", init);
+function search() {
+    const track = document.getElementById("track").value;
+    const race = document.getElementById("race").value;
+    const query = `${track}競輪 ${race}R 予想`;
+    window.open(`https://twitter.com/search?q=${encodeURIComponent(query)}&f=live`, "_blank");
+}
+</script>
+</body>
+</html>
