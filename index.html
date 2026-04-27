@@ -2,111 +2,79 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>競輪予想サーチ Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>公営競技サーチ Pro</title>
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             background-color: #1a2a3a;
+            margin: 0;
+            overflow: hidden; /* スワイプのためにスクロールを止める */
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            /* 画面全体の高さを少し余裕持たせ、パツパツを防ぐ */
-            min-height: 100vh;
-            margin: 0;
-            padding: 30px 20px; 
-            box-sizing: border-box;
+            justify-content: center;
         }
-        /* 時計のスタイル：少しだけ小さくして余白を確保 */
+
+        /* 時計エリア */
         #clock-container {
             color: white;
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-family: 'Courier New', Courier, monospace;
             flex-shrink: 0;
         }
-        #date {
-            font-size: 13px;
-            letter-spacing: 2px;
-            opacity: 0.6;
+        #date { font-size: 13px; letter-spacing: 2px; opacity: 0.6; }
+        #time { font-size: 28px; font-weight: bold; margin-top: 3px; }
+
+        /* スライド全体の箱 */
+        .slider-viewport {
+            width: 100%;
+            max-width: 340px;
+            overflow: hidden;
+            position: relative;
         }
-        #time {
-            font-size: 28px;
-            font-weight: bold;
-            margin-top: 3px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+
+        .slider-canvas {
+            display: flex;
+            transition: transform 0.3s ease-out;
+            width: 200%; /* 2ページ分 */
         }
-        /* 白い枠：サイズを固定して背景を見せる */
+
+        /* 各カードのスタイル */
         .container {
             background-color: white;
             border-radius: 25px;
             padding: 25px 20px;
-            width: 100%;
-            max-width: 320px; /* さらにスリムに */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            width: 50%; /* 親の200%に対して半分 */
+            box-sizing: border-box;
             text-align: center;
-            flex-shrink: 0; /* 縦に伸びるのを強制停止 */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
-        h1 {
-            font-size: 18px;
-            color: #1a2a3a;
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            text-align: left;
-            font-weight: bold;
-            color: #777;
-            margin-bottom: 6px;
-            font-size: 12px;
-        }
-        .select-wrapper {
-            margin-bottom: 18px;
-        }
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            font-size: 15px;
-            background-color: #fcfcfc;
-            color: #333;
-        }
-        button {
-            background: linear-gradient(135deg, #ff7e5f, #feb47b);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 50px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 6px 12px rgba(255, 126, 95, 0.3);
-            margin-top: 5px;
-        }
-        .footer-text {
-            font-size: 10px;
-            color: #aaa;
-            margin-top: 10px;
-        }
-        .note-section {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px dashed #eee;
-        }
-        .note-link {
-            color: #2cb696;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 13px;
-        }
-        .copyright {
-            font-size: 9px;
-            color: #ccc;
-            margin-top: 10px;
-        }
+
+        /* 競輪とボートの色分け */
+        .keirin-card { border-top: 8px solid #ff7e5f; }
+        .boat-card { border-top: 8px solid #0091ff; }
+
+        h1 { font-size: 18px; color: #1a2a3a; margin-bottom: 15px; }
+        label { display: block; text-align: left; font-weight: bold; color: #777; margin-bottom: 6px; font-size: 12px; }
+        .select-wrapper { margin-bottom: 15px; }
+        select { width: 100%; padding: 10px; border: 1px solid #eee; border-radius: 10px; font-size: 16px; background-color: #fcfcfc; }
+        
+        /* 競輪ボタン（オレンジ） */
+        .btn-keirin { background: linear-gradient(135deg, #ff7e5f, #feb47b); color: white; border: none; padding: 14px; border-radius: 50px; font-size: 15px; font-weight: bold; width: 100%; box-shadow: 0 6px 12px rgba(255, 126, 95, 0.3); cursor: pointer; }
+        /* ボートボタン（ブルー） */
+        .btn-boat { background: linear-gradient(135deg, #0091ff, #64b5f6); color: white; border: none; padding: 14px; border-radius: 50px; font-size: 15px; font-weight: bold; width: 100%; box-shadow: 0 6px 12px rgba(0, 145, 255, 0.3); cursor: pointer; }
+
+        .footer-text { font-size: 10px; color: #aaa; margin-top: 10px; }
+        .note-section { margin-top: 15px; padding-top: 10px; border-top: 1px dashed #eee; }
+        .note-link { color: #2cb696; text-decoration: none; font-weight: bold; font-size: 13px; }
+
+        /* ページ表示ドット */
+        .dots { display: flex; justify-content: center; margin-top: 15px; gap: 8px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+        .dot.active { background: white; }
     </style>
 </head>
 <body>
@@ -116,74 +84,108 @@
     <div id="time"></div>
 </div>
 
-<div class="container">
-    <h1>🚴‍♂️ 競輪予想サーチ Pro</h1>
-    
-    <label>開催地を選択</label>
-    <div class="select-wrapper">
-        <select id="track"></select>
-    </div>
+<div class="slider-viewport" id="viewport">
+    <div class="slider-canvas" id="canvas">
+        
+        <div class="container keirin-card">
+            <h1>🚴‍♂️ 競輪予想サーチ</h1>
+            <label>開催地を選択</label>
+            <div class="select-wrapper">
+                <select id="track-keirin"></select>
+            </div>
+            <label>レース番号</label>
+            <div class="select-wrapper">
+                <select id="race-keirin"></select>
+            </div>
+            <button class="btn-keirin" onclick="search('keirin')">𝕏 で競輪予想を探す</button>
+            <p class="footer-text">← スワイプでボートへ</p>
+            <div class="note-section">
+                <a href="https://note.com/deep_lilac7083" target="_blank" class="note-link">公式note: deep_lilac7083</a>
+            </div>
+        </div>
 
-    <label>レース番号</label>
-    <div class="select-wrapper">
-        <select id="race">
-            <option value="1R">1R</option>
-            <option value="2R">2R</option>
-            <option value="3R">3R</option>
-            <option value="4R">4R</option>
-            <option value="5R">5R</option>
-            <option value="6R">6R</option>
-            <option value="7R">7R</option>
-            <option value="8R">8R</option>
-            <option value="9R">9R</option>
-            <option value="10R">10R</option>
-            <option value="11R">11R</option>
-            <option value="12R">12R</option>
-        </select>
-    </div>
+        <div class="container boat-card">
+            <h1>🚤 ボート予想サーチ</h1>
+            <label>開催地を選択</label>
+            <div class="select-wrapper">
+                <select id="track-boat"></select>
+            </div>
+            <label>レース番号</label>
+            <div class="select-wrapper">
+                <select id="race-boat"></select>
+            </div>
+            <button class="btn-boat" onclick="search('boat')">𝕏 でボート予想を探す</button>
+            <p class="footer-text">競輪へスワイプ →</p>
+            <div class="note-section">
+                <a href="https://note.com/deep_lilac7083" target="_blank" class="note-link">公式note: deep_lilac7083</a>
+            </div>
+        </div>
 
-    <button onclick="search()">𝕏 でリアルタイム予想を探す</button>
-    <p class="footer-text">※最新の出走表と照らし合わせてご確認ください</p>
-
-    <div class="note-section">
-        <p style="font-size: 11px; color: #999; margin-bottom: 5px;">数値から展開を読み解く「管理者の目線」</p>
-        <a href="https://note.com/deep_lilac7083" target="_blank" class="note-link">公式note: deep_lilac7083</a>
-        <p class="copyright">&copy; 2024 Keirin Prediction Tool</p>
     </div>
 </div>
 
+<div class="dots">
+    <div class="dot active" id="dot0"></div>
+    <div class="dot" id="dot1"></div>
+</div>
+
 <script>
-    function updateClock() {
-        const now = new Date();
-        const y = now.getFullYear();
-        const m = now.getMonth() + 1;
-        const d = now.getDate();
-        const dayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-        document.getElementById("date").innerText = `${y}.${m}.${d} ${dayList[now.getDay()]}`;
-        document.getElementById("time").innerText = now.toLocaleTimeString('ja-JP', { hour12: false });
-    }
-    setInterval(updateClock, 1000);
-
-    const tracks = ["函館", "青森", "いわき平", "弥彦", "前橋", "取手", "宇都宮", "大宮", "西武園", "京王閣", "立川", "松戸", "千葉", "川崎", "平塚", "小田原", "伊東", "静岡", "名古屋", "岐阜", "大垣", "豊橋", "富山", "松阪", "四日市", "福井", "奈良", "向日町", "和歌山", "岸和田", "玉野", "広島", "防府", "高松", "小松島", "松山", "高知", "小倉", "久留米", "武雄", "佐世保", "別府", "熊本"];
+    // データ
+    const kTracks = ["函館", "青森", "いわき平", "弥彦", "前橋", "取手", "宇都宮", "大宮", "西武園", "京王閣", "立川", "松戸", "千葉", "川崎", "平塚", "小田原", "伊東", "静岡", "名古屋", "岐阜", "大垣", "豊橋", "富山", "松阪", "四日市", "福井", "奈良", "向日町", "和歌山", "岸和田", "玉野", "広島", "防府", "高松", "小松島", "松山", "高知", "小倉", "久留米", "武雄", "佐世保", "別府", "熊本"];
+    const bTracks = ["桐生", "戸田", "江戸川", "平和島", "多摩川", "浜名湖", "蒲郡", "常滑", "津", "三国", "びわこ", "住之江", "尼崎", "鳴門", "丸亀", "児島", "宮島", "徳山", "下関", "若松", "芦屋", "福岡", "唐津", "大村"];
     
+    // 初期化
     function init() {
-        const trackSelect = document.getElementById("track");
-        tracks.sort().forEach(t => {
-            const o = document.createElement("option");
-            o.value = t; o.textContent = t; trackSelect.appendChild(o);
-        });
+        fillSelect("track-keirin", kTracks);
+        fillSelect("track-boat", bTracks);
+        fillSelect("race-keirin", Array.from({length: 12}, (_, i) => (i+1) + "R"));
+        fillSelect("race-boat", Array.from({length: 12}, (_, i) => (i+1) + "R"));
         updateClock();
+        setInterval(updateClock, 1000);
     }
 
-    function search() {
-        const track = document.getElementById("track").value;
-        const race = document.getElementById("race").value;
-        const query = encodeURIComponent(`${track}競輪 ${race} 予想`);
+    function fillSelect(id, list) {
+        const el = document.getElementById(id);
+        list.sort().forEach(t => {
+            const o = document.createElement("option");
+            o.value = t; o.textContent = t; el.appendChild(o);
+        });
+    }
+
+    function search(type) {
+        const track = document.getElementById(`track-${type}`).value;
+        const race = document.getElementById(`race-${type}`).value;
+        const keyword = type === 'keirin' ? '競輪' : 'ボートレース';
+        const query = encodeURIComponent(`${track}${keyword} ${race} 予想`);
         window.open(`https://twitter.com/search?q=${query}&f=live`, '_blank');
     }
 
+    function updateClock() {
+        const now = new Date();
+        const y = now.getFullYear(); const m = now.getMonth() + 1; const d = now.getDate();
+        const day = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][now.getDay()];
+        document.getElementById("date").innerText = `${y}.${m}.${d} ${day}`;
+        document.getElementById("time").innerText = now.toLocaleTimeString('ja-JP', { hour12: false });
+    }
+
+    // スワイプ処理
+    let startX = 0;
+    let currentIdx = 0;
+    const canvas = document.getElementById("canvas");
+
+    window.addEventListener("touchstart", (e) => { startX = e.touches[0].pageX; });
+    window.addEventListener("touchend", (e) => {
+        let diff = startX - e.changedTouches[0].pageX;
+        if (Math.abs(diff) > 50) {
+            currentIdx = diff > 0 ? 1 : 0;
+            canvas.style.transform = `translateX(-${currentIdx * 50}%)`;
+            document.getElementById("dot0").classList.toggle("active", currentIdx === 0);
+            document.getElementById("dot1").classList.toggle("active", currentIdx === 1);
+        }
+    });
+
     init();
 </script>
-
 </body>
 </html>
+
