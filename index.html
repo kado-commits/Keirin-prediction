@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -9,10 +9,10 @@
             font-family: 'Helvetica Neue', Arial, sans-serif;
             background-color: #1a2a3a;
             display: flex;
-            flex-direction: column; /* 縦に並べる */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: 100vh; /* 最低限の高さは確保 */
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
@@ -25,12 +25,12 @@
             font-family: 'Courier New', Courier, monospace;
         }
         #date {
-            font-size: 16px;
+            font-size: 14px;
             letter-spacing: 2px;
-            opacity: 0.8;
+            opacity: 0.7;
         }
         #time {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: bold;
             margin-top: 5px;
             text-shadow: 0 0 10px rgba(255,255,255,0.3);
@@ -38,36 +38,35 @@
         .container {
             background-color: white;
             border-radius: 30px;
-            padding: 40px 30px;
+            padding: 30px; /* 少し余白を詰めました */
             width: 100%;
-            max-width: 360px;
+            max-width: 340px; /* さっきより少しスリムに固定 */
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             text-align: center;
+            flex-shrink: 0; /* ★これが重要！勝手に伸びないようにします */
         }
         h1 {
-            font-size: 24px;
+            font-size: 20px; /* 文字を少し小さくしてスッキリ */
             color: #1a2a3a;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         label {
             display: block;
             text-align: left;
             font-weight: bold;
             color: #666;
-            margin-bottom: 10px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: 13px;
         }
         .select-wrapper {
-            margin-bottom: 25px;
-            position: relative;
+            margin-bottom: 20px;
         }
         select {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             border: 2px solid #eee;
-            border-radius: 15px;
+            border-radius: 12px;
             font-size: 16px;
-            appearance: none;
             background-color: #f9f9f9;
             color: #333;
         }
@@ -75,39 +74,35 @@
             background: linear-gradient(135deg, #ff7e5f, #feb47b);
             color: white;
             border: none;
-            padding: 18px;
+            padding: 15px;
             border-radius: 50px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            box-shadow: 0 10px 20px rgba(255, 126, 95, 0.3);
-            margin-top: 10px;
-            transition: transform 0.2s;
-        }
-        button:active {
-            transform: scale(0.98);
+            box-shadow: 0 8px 15px rgba(255, 126, 95, 0.3);
+            margin-top: 5px;
         }
         .footer-text {
-            font-size: 11px;
+            font-size: 10px;
             color: #999;
-            margin-top: 15px;
+            margin-top: 12px;
         }
         .note-section {
-            margin-top: 30px;
-            padding-top: 20px;
+            margin-top: 25px;
+            padding-top: 15px;
             border-top: 1px dashed #eee;
         }
         .note-link {
             color: #2cb696;
             text-decoration: none;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
         }
         .copyright {
-            font-size: 10px;
+            font-size: 9px;
             color: #bbb;
-            margin-top: 15px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -148,29 +143,23 @@
     <p class="footer-text">※最新の出走表と照らし合わせてご確認ください</p>
 
     <div class="note-section">
-        <p style="font-size: 12px; color: #888; margin-bottom: 8px;">数値から展開を読み解く「管理者の目線」</p>
+        <p style="font-size: 11px; color: #888; margin-bottom: 5px;">数値から展開を読み解く「管理者の目線」</p>
         <a href="https://note.com/deep_lilac7083" target="_blank" class="note-link">公式note: deep_lilac7083</a>
         <p class="copyright">&copy; 2024 Keirin Prediction Tool</p>
     </div>
 </div>
 
 <script>
-    // 時計を更新する関数
     function updateClock() {
         const now = new Date();
         const y = now.getFullYear();
         const m = now.getMonth() + 1;
         const d = now.getDate();
         const dayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-        const day = dayList[now.getDay()];
-        const h = String(now.getHours()).padStart(2, '0');
-        const min = String(now.getMinutes()).padStart(2, '0');
-        const sec = String(now.getSeconds()).padStart(2, '0');
-
-        document.getElementById("date").innerText = `${y}.${m}.${d} ${day}`;
-        document.getElementById("time").innerText = `${h}:${min}:${sec}`;
+        document.getElementById("date").innerText = `${y}.${m}.${d} ${dayList[now.getDay()]}`;
+        document.getElementById("time").innerText = now.toLocaleTimeString('ja-JP', { hour12: false });
     }
-    setInterval(updateClock, 1000); // 1秒ごとに更新
+    setInterval(updateClock, 1000);
 
     const tracks = ["函館", "青森", "いわき平", "弥彦", "前橋", "取手", "宇都宮", "大宮", "西武園", "京王閣", "立川", "松戸", "千葉", "川崎", "平塚", "小田原", "伊東", "静岡", "名古屋", "岐阜", "大垣", "豊橋", "富山", "松阪", "四日市", "福井", "奈良", "向日町", "和歌山", "岸和田", "玉野", "広島", "防府", "高松", "小松島", "松山", "高知", "小倉", "久留米", "武雄", "佐世保", "別府", "熊本"];
     
@@ -180,7 +169,7 @@
             const o = document.createElement("option");
             o.value = t; o.textContent = t; trackSelect.appendChild(o);
         });
-        updateClock(); // 起動時に一度実行
+        updateClock();
     }
 
     function search() {
