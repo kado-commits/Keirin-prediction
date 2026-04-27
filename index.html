@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -12,41 +12,44 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* 最低限の高さは確保 */
+            /* 画面全体の高さを少し余裕持たせ、パツパツを防ぐ */
+            min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 30px 20px; 
             box-sizing: border-box;
         }
-        /* 時計のスタイル */
+        /* 時計のスタイル：少しだけ小さくして余白を確保 */
         #clock-container {
             color: white;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-family: 'Courier New', Courier, monospace;
+            flex-shrink: 0;
         }
         #date {
-            font-size: 14px;
+            font-size: 13px;
             letter-spacing: 2px;
-            opacity: 0.7;
+            opacity: 0.6;
         }
         #time {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: bold;
-            margin-top: 5px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            margin-top: 3px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
         }
+        /* 白い枠：サイズを固定して背景を見せる */
         .container {
             background-color: white;
-            border-radius: 30px;
-            padding: 30px; /* 少し余白を詰めました */
+            border-radius: 25px;
+            padding: 25px 20px;
             width: 100%;
-            max-width: 340px; /* さっきより少しスリムに固定 */
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 320px; /* さらにスリムに */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             text-align: center;
-            flex-shrink: 0; /* ★これが重要！勝手に伸びないようにします */
+            flex-shrink: 0; /* 縦に伸びるのを強制停止 */
         }
         h1 {
-            font-size: 20px; /* 文字を少し小さくしてスッキリ */
+            font-size: 18px;
             color: #1a2a3a;
             margin-bottom: 20px;
         }
@@ -54,42 +57,42 @@
             display: block;
             text-align: left;
             font-weight: bold;
-            color: #666;
-            margin-bottom: 8px;
-            font-size: 13px;
+            color: #777;
+            margin-bottom: 6px;
+            font-size: 12px;
         }
         .select-wrapper {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
         select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #eee;
-            border-radius: 12px;
-            font-size: 16px;
-            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            font-size: 15px;
+            background-color: #fcfcfc;
             color: #333;
         }
         button {
             background: linear-gradient(135deg, #ff7e5f, #feb47b);
             color: white;
             border: none;
-            padding: 15px;
+            padding: 14px;
             border-radius: 50px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            box-shadow: 0 8px 15px rgba(255, 126, 95, 0.3);
+            box-shadow: 0 6px 12px rgba(255, 126, 95, 0.3);
             margin-top: 5px;
         }
         .footer-text {
             font-size: 10px;
-            color: #999;
-            margin-top: 12px;
+            color: #aaa;
+            margin-top: 10px;
         }
         .note-section {
-            margin-top: 25px;
+            margin-top: 20px;
             padding-top: 15px;
             border-top: 1px dashed #eee;
         }
@@ -101,7 +104,7 @@
         }
         .copyright {
             font-size: 9px;
-            color: #bbb;
+            color: #ccc;
             margin-top: 10px;
         }
     </style>
@@ -143,7 +146,7 @@
     <p class="footer-text">※最新の出走表と照らし合わせてご確認ください</p>
 
     <div class="note-section">
-        <p style="font-size: 11px; color: #888; margin-bottom: 5px;">数値から展開を読み解く「管理者の目線」</p>
+        <p style="font-size: 11px; color: #999; margin-bottom: 5px;">数値から展開を読み解く「管理者の目線」</p>
         <a href="https://note.com/deep_lilac7083" target="_blank" class="note-link">公式note: deep_lilac7083</a>
         <p class="copyright">&copy; 2024 Keirin Prediction Tool</p>
     </div>
