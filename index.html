@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>公営競技サーチ Pro | 競輪・ボートレース予想支援</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a2a3a">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #1a2a3a; margin: 0; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
         #clock-container { color: white; text-align: center; padding: 25px 0 10px; font-family: 'Courier New', Courier, monospace; }
@@ -78,7 +83,7 @@
 <footer class="site-footer">
     <div class="footer-links">
         <a href="https://note.com/deep_lilac7083" target="_blank">運営者note</a>
-        <a href="policy.html"">プライバシーポリシー</a>
+        <a href="policy.html">プライバシーポリシー</a>
     </div>
     <p class="disclaimer">
         【免責事項】本ツールは情報収集の補助を目的としており、的中を保証するものではありません。投票は必ずご自身の判断と責任において行ってください。
@@ -87,6 +92,15 @@
 </footer>
 
 <script>
+    // サービスワーカーの登録
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('PWA Service Worker registered'))
+                .catch(err => console.error('PWA Service Worker failed', err));
+        });
+    }
+
     const keirinData = { "いわき平": { bank: "400m", straight: "62.7m", cant: "32°", trend: "差し", desc: "空中バンク。風が吹き抜けやすい。" }, "松戸": { bank: "333m", straight: "38.2m", cant: "29°", trend: "逃げ", desc: "直線が短い。先行圧倒的有利。" }, "default": { bank: "---", straight: "---", cant: "---", trend: "要確認", desc: "会場を選択すると詳細データが表示されます。" } };
     const boatData = { "住之江": { water: "淡水", flow: "なし", motor: "標準", trend: "イン最強", desc: "聖地。イン逃げ信頼。" }, "戸田": { water: "淡水", flow: "なし", motor: "減音", trend: "捲り差し", desc: "狭い水面。カド捲り注意。" }, "default": { water: "---", flow: "---", motor: "---", trend: "要確認", desc: "会場を選択すると詳細データが表示されます。" } };
     const kTracks = ["函館", "青森", "いわき平", "弥彦", "前橋", "取手", "宇都宮", "大宮", "西武園", "京王閣", "立川", "松戸", "千葉", "川崎", "平塚", "小田原", "伊東", "静岡", "名古屋", "岐阜", "大垣", "豊橋", "富山", "松阪", "四日市", "福井", "奈良", "向日町", "和歌山", "岸和田", "玉野", "広島", "防府", "高松", "小松島", "松山", "高知", "小倉", "久留米", "武雄", "佐世保", "別府", "熊本"];
@@ -101,7 +115,6 @@
         fillSelect("race-keirin", Array.from({length: 12}, (_, i) => (i+1) + "R"));
         fillSelect("race-boat", Array.from({length: 12}, (_, i) => (i+1) + "R"));
         
-        // 西暦の自動設定
         document.getElementById('current-year').innerText = new Date().getFullYear();
         
         updateClock(); setInterval(updateClock, 1000);
