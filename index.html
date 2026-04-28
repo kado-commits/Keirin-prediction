@@ -3,264 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>公営競技サーチ Pro</title>
+    <title>公認競技サーチ Pro</title>
     <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #1a2a3a; margin: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #clock-container { color: white; text-align: center; margin-bottom: 15px; font-family: 'Courier New', Courier, monospace; flex-shrink: 0; }
-        #date { font-size: 13px; letter-spacing: 2px; opacity: 0.6; }
-        #time { font-size: 28px; font-weight: bold; margin-top: 3px; }
-        .slider-viewport { width: 100%; max-width: 330px; overflow: hidden; position: relative; }
-        .slider-canvas { display: flex; transition: transform 0.3s ease-out; width: 200%; }
-        .container { background-color: white; border-radius: 25px; padding: 25px 20px; width: 50%; box-sizing: border-box; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4); flex-shrink: 0; margin: 0 5px; }
-        .keirin-card { border-top: 8px solid #ff7e5f; }
-        .boat-card { border-top: 8px solid #0091ff; }
-        h1 { font-size: 18px; color: #1a2a3a; margin-bottom: 20px; }
-        label { display: block; text-align: left; font-weight: bold; color: #777; margin-bottom: 6px; font-size: 12px; }
-        .select-wrapper { margin-bottom: 18px; }
-        select { width: 100%; padding: 10px; border: 1px solid #eee; border-radius: 10px; font-size: 16px; background-color: #fcfcfc; -webkit-appearance: none; }
-        .btn-keirin { background: linear-gradient(135deg, #ff7e5f, #feb47b); color: white; border: none; padding: 15px; border-radius: 50px; font-size: 16px; font-weight: bold; width: 100%; cursor: pointer; }
-        .btn-boat { background: linear-gradient(135deg, #0091ff, #64b5f6); color: white; border: none; padding: 15px; border-radius: 50px; font-size: 16px; font-weight: bold; width: 100%; cursor: pointer; }
-        
-        /* 今日の修正：審査対策＆ナビゲーション */
-        .note-section { margin-top: 20px; padding-top: 15px; border-top: 1px dashed #eee; }
-        .note-description { font-size: 10px; color: #999; margin-bottom: 5px; display: block; }
-        .note-link { color: #2cb696; text-decoration: none; font-weight: bold; font-size: 13px; border-bottom: 1px solid #2cb696; padding-bottom: 2px; }
-        
-        .info-display-outer { width: 100%; max-width: 320px; margin-top: 20px; text-align: center; min-height: 120px; }
-        .info-label { color: #778899; font-size: 10px; font-weight: bold; letter-spacing: 2px; margin-bottom: 8px; display: block; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; color: #dcdcdc; font-size: 12px; text-align: left; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; }
-        .info-item b { color: #feb47b; font-size: 11px; margin-right: 4px; }
-        .info-description { grid-column: 1 / 3; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; margin-top: 5px; font-size: 12px; color: #fff; text-align: center; line-height: 1.4; }
-        
-        .dots { display: flex; justify-content: center; margin-top: 15px; gap: 8px; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: 0.3s; }
-        .dot.active { background: white; transform: scale(1.2); }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #1a2a3a; margin: 0; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-top: 30px; }
+        #clock-container { color: white; text-align: center; margin-bottom: 20px; font-family: 'Courier New', Courier, monospace; opacity: 0.8; }
+        #date { font-size: 14px; letter-spacing: 2px; }
+        #time { font-size: 32px; font-weight: bold; margin-top: 5px; }
+        .slider-viewport { width: 100%; max-width: 350px; overflow: hidden; position: relative; }
+        .slider-canvas { display: flex; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); width: 200%; }
+        .container { background-color: white; border-radius: 30px; padding: 30px 20px; width: 50%; box-sizing: border-box; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); flex-shrink: 0; margin: 0 5px; min-height: 480px; }
+        .keirin-card { border-top: 10px solid #ff7e5f; }
+        .boat-card { border-top: 10px solid #0091ff; }
+        h1 { font-size: 20px; color: #1a2a3a; margin-bottom: 25px; }
+        select { width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 15px; font-size: 16px; background-color: #fcfcfc; margin-bottom: 20px; }
+        .info-display-outer { width: 100%; text-align: center; border-radius: 20px; background: #f8f9fa; padding: 20px; box-sizing: border-box; min-height: 200px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; }
+        .info-label { color: #aaa; font-size: 10px; font-weight: bold; display: block; }
+        .info-item { font-size: 14px; color: #333; border-bottom: 1px solid #eaeaea; padding-bottom: 5px; }
+        .info-item b { color: #ff7e5f; font-size: 15px; }
+        .boat-card .info-item b { color: #0091ff; }
+        .info-description { grid-column: 1 / 3; padding-top: 12px; font-size: 12px; color: #666; line-height: 1.6; text-align: left; }
+        .dots { display: flex; justify-content: center; margin-top: 20px; gap: 10px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: 0.3s; }
+        .dot.active { background: white; transform: scale(1.3); }
+        .footer-content { width: 100%; max-width: 350px; margin-top: 40px; padding-bottom: 50px; }
+        .note-box { background: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; }
+        .legal-links { display: flex; justify-content: center; gap: 20px; color: rgba(255,255,255,0.3); font-size: 11px; }
     </style>
 </head>
 <body>
 
-<div id="clock-container">
-    <div id="date"></div>
-    <div id="time"></div>
-</div>
+    <div id="clock-container">
+        <div id="date">0000.00.00 ---</div>
+        <div id="time">00:00:00</div>
+    </div>
 
-<div class="slider-viewport" id="viewport">
-    <div class="slider-canvas" id="canvas">
-        <div class="container keirin-card">
-            <h1>🚴‍♂️ 競輪予想サーチ</h1>
-            <label>開催地を選択</label>
-            <div class="select-wrapper"><select id="track-keirin" onchange="updateInfo()"></select></div>
-            <label>レース番号</label>
-            <div class="select-wrapper"><select id="race-keirin"></select></div>
-            <button class="btn-keirin" onclick="search('keirin')">𝕏 で探す</button>
-            <div class="note-section">
-                <span class="note-description">数値から展開を読み解く</span>
-                <a href="https://note.com/deep_lilac7083" target="_blank" class="note-link">管理者の競輪noteを読む</a>
+    <div class="slider-viewport">
+        <div class="slider-canvas" id="slider">
+            <div class="container keirin-card">
+                <h1>🚴 競輪サーチ Pro</h1>
+                <select id="k-select" onchange="updateK()">
+                    <option value="">-- 全43場から選択 --</option>
+                    <option value="函館">函館</option><option value="青森">青森</option><option value="いわき平">いわき平</option>
+                    <option value="弥彦">弥彦</option><option value="前橋">前橋</option><option value="取手">取手</option>
+                    <option value="宇都宮">宇都宮</option><option value="大宮">大宮</option><option value="西武園">西武園</option>
+                    <option value="京王閣">京王閣</option><option value="立川">立川</option><option value="松戸">松戸</option>
+                    <option value="千葉">千葉JP250</option><option value="川崎">川崎</option><option value="平塚">平塚</option>
+                    <option value="小田原">小田原</option><option value="伊東">伊東</option><option value="静岡">静岡</option>
+                    <option value="名古屋">名古屋</option><option value="岐阜">岐阜</option><option value="大垣">大垣</option>
+                    <option value="豊橋">豊橋</option><option value="富山">富山</option><option value="松阪">松阪</option>
+                    <option value="四日市">四日市</option><option value="福井">福井</option><option value="奈良">奈良</option>
+                    <option value="向日町">向日町</option><option value="和歌山">和歌山</option><option value="岸和田">岸和田</option>
+                    <option value="玉野">玉野</option><option value="広島">広島</option><option value="防府">防府</option>
+                    <option value="高松">高松</option><option value="小松島">小松島</option><option value="高知">高知</option>
+                    <option value="松山">松山</option><option value="小倉">小倉</option><option value="久留米">久留米</option>
+                    <option value="武雄">武雄</option><option value="佐世保">佐世保</option><option value="別府">別府</option><option value="熊本">熊本</option>
+                </select>
+                <div class="info-display-outer">
+                    <div id="k-info" class="info-grid">
+                        <div class="info-item"><span class="info-label">周長</span><span id="k1">---</span></div>
+                        <div class="info-item"><span class="info-label">直線</span><span id="k2">---</span></div>
+                        <div class="info-item"><span class="info-label">カント</span><span id="k3">---</span></div>
+                        <div class="info-item"><span class="info-label">有利</span><span id="k4">---</span></div>
+                        <div id="k-desc" class="info-description">場を選択すると特徴が表示されます。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container boat-card">
+                <h1>🚤 ボートサーチ Pro</h1>
+                <select id="b-select" onchange="updateB()">
+                    <option value="">-- 全24場から選択 --</option>
+                    <option value="桐生">桐生</option><option value="戸田">戸田</option><option value="江戸川">江戸川</option><option value="平和島">平和島</option><option value="多摩川">多摩川</option><option value="浜名湖">浜名湖</option><option value="蒲郡">蒲郡</option><option value="常滑">常滑</option><option value="津">津</option><option value="三国">三国</option><option value="びわこ">びわこ</option><option value="住之江">住之江</option><option value="尼崎">尼崎</option><option value="鳴門">鳴門</option><option value="丸亀">丸亀</option><option value="児島">児島</option><option value="宮島">宮島</option><option value="徳山">徳山</option><option value="下関">下関</option><option value="若松">若松</option><option value="芦屋">芦屋</option><option value="福岡">福岡</option><option value="唐津">唐津</option><option value="大村">大村</option>
+                </select>
+                <div class="info-display-outer">
+                    <div id="b-info" class="info-grid">
+                        <div class="info-item"><span class="info-label">水質</span><span id="b1">---</span></div>
+                        <div class="info-item"><span class="info-label">イン勝率</span><span id="b2">---</span></div>
+                        <div class="info-item"><span class="info-label">風・潮</span><span id="b3">---</span></div>
+                        <div class="info-item"><span class="info-label">特徴</span><span id="b4">---</span></div>
+                        <div id="b-desc" class="info-description">場を選択すると詳細な水面データが表示されます。</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="container boat-card">
-            <h1>🚤 ボート予想サーチ</h1>
-            <label>開催地を選択</label>
-            <div class="select-wrapper"><select id="track-boat" onchange="updateInfo()"></select></div>
-            <label>レース番号</label>
-            <div class="select-wrapper"><select id="race-boat"></select></div>
-            <button class="btn-boat" onclick="search('boat')">𝕏 で探す</button>
-            <div class="note-section">
-                <span class="note-description">独自の波面分析・モーター評価</span>
-                <a href="https://note.com/deep_lilac7083" target="_blank" class="note-link">管理者のボートnoteを読む</a>
-            </div>
+    </div>
+
+    <div class="dots">
+        <div class="dot active" id="dot0"></div>
+        <div class="dot" id="dot1"></div>
+    </div>
+
+    <div class="footer-content">
+        <div class="note-box">
+            <h4 style="margin:0; font-size:12px;">Note</h4>
+            <p style="margin:5px 0 0 0; font-size:10px; color:#777;">天候や風の影響を強く受ける競技です。最終確認は公式発表をご参照ください。</p>
         </div>
+        <div class="legal-links"><span>Privacy Policy</span> | <span>Terms</span> | <span>Contact</span></div>
     </div>
-</div>
 
-<div class="info-display-outer">
-    <span class="info-label" id="strategy-label">FIELD STRATEGY</span>
-    <div id="info-grid" class="info-grid">
-        </div>
-</div>
-
-<div class="dots">
-    <div class="dot active" id="dot0"></div>
-    <div class="dot" id="dot1"></div>
-</div>
-
-<script>
-    // データ定義（省略なし）
-    const keirinData = {
-        "函館": { bank: "400m", straight: "51.3m", cant: "30°", trend: "逃げ・差し", desc: "海が近く風の影響大。カントは標準的。" },
-        "青森": { bank: "400m", straight: "58.9m", cant: "32°", trend: "差し・捲り", desc: "直線が長く、後方からの追い込みが決まりやすい。" },
-        "いわき平": { bank: "400m", straight: "62.7m", cant: "32°", trend: "差し", desc: "空中バンク。風が吹き抜けやすく波乱も。" },
-        "弥彦": { bank: "400m", straight: "63.1m", cant: "32°", trend: "差し", desc: "直線が非常に長く、先行選手には厳しい。" },
-        "前橋": { bank: "333m", straight: "46.7m", cant: "36°", trend: "逃げ", desc: "超高速ドーム。カントが日本一きつく逃げ有利。" },
-        "取手": { bank: "400m", straight: "54.8m", cant: "31°", trend: "逃げ・差し", desc: "クセがなく、力通りの決着が多い。" },
-        "宇都宮": { bank: "500m", straight: "63.3m", cant: "25°", trend: "差し・捲り", desc: "500バンク。直線が長く追い込みが決まる。" },
-        "大宮": { bank: "500m", straight: "66.7m", cant: "24°", trend: "差し", desc: "日本一長い直線。先行選手は粘りが必要。" },
-        "西武園": { bank: "400m", straight: "47.6m", cant: "29°", trend: "逃げ", desc: "直線が短く、先行・番手有利な展開が多い。" },
-        "京王閣": { bank: "400m", straight: "56.3m", cant: "32°", trend: "差し・捲り", desc: "風の影響は少ないが、直線はそこそこ長い。" },
-        "立川": { bank: "400m", straight: "58.0m", cant: "31°", trend: "差し", desc: "直線が長く、ゴール前での逆転が多い。" },
-        "松戸": { bank: "333m", straight: "38.2m", cant: "29°", trend: "逃げ", desc: "333バンクの代表格。早めの仕掛けが必須。" },
-        "千葉": { bank: "250m", straight: "---", cant: "---", trend: "逃げ", desc: "PIST6専用。特殊な短距離高速レース。" },
-        "川崎": { bank: "400m", straight: "58.0m", cant: "32°", trend: "差し・捲り", desc: "クセのないバンクで力勝負になりやすい。" },
-        "平塚": { bank: "400m", straight: "54.2m", cant: "31°", trend: "逃げ・差し", desc: "海風が入り込む。カントは標準的。" },
-        "小田原": { bank: "333m", straight: "36.1m", cant: "35°", trend: "逃げ", desc: "カントがきつく直線が短い。先行が絶対有利。" },
-        "伊東": { bank: "333m", straight: "46.6m", cant: "31°", trend: "逃げ", desc: "333にしては直線があり、捲りも届く。" },
-        "静岡": { bank: "400m", straight: "56.4m", cant: "30°", trend: "差し", desc: "富士山からの風「駿河おろし」に注意。" },
-        "名古屋": { bank: "400m", straight: "58.8m", cant: "34°", trend: "差し・捲り", desc: "直線が長くカントもきつい。力勝負のバンク。" },
-        "岐阜": { bank: "400m", straight: "59.3m", cant: "31°", trend: "差し", desc: "直線が長く、ゴール前で着順が入れ替わる。" },
-        "大垣": { bank: "400m", straight: "56.2m", cant: "32°", trend: "差し", desc: "伊吹おろしの風が強く、先行選手を苦しめる。" },
-        "豊橋": { bank: "400m", straight: "56.2m", cant: "33°", trend: "差し・捲り", desc: "風の影響を受けやすく、重いバンクと言われる。" },
-        "富山": { bank: "333m", straight: "43.0m", cant: "33°", trend: "逃げ", desc: "333の中では直線があり、捲り差しも決まる。" },
-        "松阪": { bank: "400m", straight: "61.5m", cant: "32°", trend: "差し", desc: "直線がかなり長く、追い込み勢の出番。" },
-        "四日市": { bank: "400m", straight: "62.4m", cant: "32°", trend: "差し", desc: "ナイター専用。海風の影響で重くなる。" },
-        "福井": { bank: "400m", straight: "52.8m", cant: "31°", trend: "逃げ・差し", desc: "クセがなく自力選手が走りやすい。" },
-        "奈良": { bank: "333m", straight: "38.0m", cant: "33°", trend: "逃げ", desc: "典型的な333。インの先行が断然有利。" },
-        "向日町": { bank: "400m", straight: "47.3m", cant: "30°", trend: "逃げ", desc: "直線が短く、前々にいないと厳しい。" },
-        "和歌山": { bank: "400m", straight: "59.9m", cant: "32°", trend: "差し", desc: "海が近く風が強い。直線は長め。" },
-        "岸和田": { bank: "400m", straight: "56.7m", cant: "30°", trend: "差し", desc: "クセがなく、力通りの決着が多い。" },
-        "玉野": { bank: "400m", straight: "47.9m", cant: "30°", trend: "逃げ", desc: "直線が短く、瀬戸内海の風がレースを左右する。" },
-        "広島": { bank: "400m", straight: "57.9m", cant: "30°", trend: "差し", desc: "クセはないが、海風で重くなることがある。" },
-        "防府": { bank: "333m", straight: "42.5m", cant: "33°", trend: "逃げ", desc: "333の中では直線があり、地元勢が強い。" },
-        "高松": { bank: "400m", straight: "54.4m", cant: "31°", trend: "逃げ・差し", desc: "チヌ（黒鯛）が跳ねる。風は不規則。" },
-        "小松島": { bank: "400m", straight: "55.5m", cant: "30°", trend: "逃げ・差し", desc: "海が近く、強風時は波乱の予感。" },
-        "松山": { bank: "400m", straight: "58.6m", cant: "33°", trend: "差し・捲り", desc: "カントがきつく、捲りが加速しやすい。" },
-        "高知": { bank: "500m", straight: "52.0m", cant: "24°", trend: "逃げ・差し", desc: "500にしては直線が短く、捲りも決まる。" },
-        "小倉": { bank: "400m", straight: "56.9m", cant: "34°", trend: "差し", desc: "ドーム無風。スピード自慢の差しが決まる。" },
-        "久留米": { bank: "400m", straight: "50.7m", cant: "31°", trend: "逃げ・差し", desc: "クセが少なく、自力選手が活躍しやすい。" },
-        "武雄": { bank: "400m", straight: "64.4m", cant: "31°", trend: "差し", desc: "日本最大級の直線。追い込み勢が有利。" },
-        "佐世保": { bank: "400m", straight: "40.2m", cant: "31°", trend: "逃げ", desc: "直線が極端に短く、先行逃げ切りが多い。" },
-        "別府": { bank: "400m", straight: "59.9m", cant: "33°", trend: "差し", desc: "海風が重く、直線で着順が入れ替わる。" },
-        "熊本": { bank: "500m", straight: "60.3m", cant: "28°", trend: "差し", desc: "通称「武蔵塚バンク」。直線はかなり長い。" },
-        "default": { bank: "---", straight: "---", cant: "---", trend: "要確認", desc: "会場を選択すると詳細データが表示されます。" }
-    };
-
-    const boatData = {
-        "桐生": { water: "淡水", flow: "なし", motor: "標準", trend: "イン・捲り", desc: "標高が高く、冬は赤城おろしで波乱も。" },
-        "戸田": { water: "淡水", flow: "なし", motor: "減音", trend: "捲り差し", desc: "日本一狭い水面。イン勝率は全国最低クラス。" },
-        "江戸川": { water: "汽水", flow: "あり", motor: "標準", trend: "捲り", desc: "日本一の難所。風と潮で順位が激変する。" },
-        "平和島": { water: "海水", flow: "あり", motor: "標準", trend: "差し・捲り", desc: "インが弱く配当が跳ねやすい。" },
-        "多摩川": { water: "淡水", flow: "なし", motor: "標準", trend: "差し", desc: "日本一の静水面。スピード勝負になる。" },
-        "浜名湖": { water: "汽水", flow: "あり", motor: "標準", trend: "差し・捲り", desc: "全国屈指の広大な水面。インも弱くない。" },
-        "蒲郡": { water: "海水", flow: "なし", motor: "標準", trend: "イン有利", desc: "ナイターのインはかなり堅実。" },
-        "常滑": { water: "海水", flow: "なし", motor: "標準", trend: "イン有利", desc: "イン勝率が高い。冬は伊勢湾の風に注意。" },
-        "津": { water: "海水", flow: "あり", motor: "標準", trend: "イン・捲り", desc: "鈴鹿おろしが吹くと水面が荒れる。" },
-        "三国": { water: "淡水", flow: "なし", motor: "標準", trend: "イン・捲り", desc: "1マークの幅が広く、多彩な攻めが可能。" },
-        "びわこ": { water: "淡水", flow: "なし", motor: "標準", trend: "捲り", desc: "1マークが狭く、インが苦戦する場。" },
-        "住之江": { water: "淡水", flow: "なし", motor: "標準", trend: "イン最強", desc: "ボートレースの聖地。イン逃げ信頼。" },
-        "尼崎": { water: "淡水", flow: "なし", motor: "標準", trend: "イン有利", desc: "センターからの捲り差しも決まる場。" },
-        "鳴門": { water: "海水", flow: "あり", motor: "標準", trend: "捲り差し", desc: "潮の流れが速い。地元勢のコース取りに注目。" },
-        "丸亀": { water: "海水", flow: "あり", motor: "標準", trend: "イン・差し", desc: "潮の満ち引きでレース傾向がガラリと変わる。" },
-        "児島": { water: "海水", flow: "あり", motor: "標準", trend: "イン有利", desc: "瀬戸内海の潮の影響を受ける。インは強め。" },
-        "宮島": { water: "海水", flow: "あり", motor: "標準", trend: "イン有利", desc: "潮位の差が大きい。満潮時はインが有利。" },
-        "徳山": { water: "海水", flow: "あり", motor: "標準", trend: "イン最強", desc: "全国トップクラスのイン勝率を誇る。" },
-        "下関": { water: "海水", flow: "あり", motor: "標準", trend: "イン有利", desc: "ナイターはイン逃げがメイン。風は穏やか。" },
-        "若松": { water: "海水", flow: "あり", motor: "標準", trend: "イン・捲り", desc: "夜になるとインがさらに強くなる。" },
-        "芦屋": { water: "淡水", flow: "なし", motor: "標準", trend: "イン最強", desc: "モーニングはインの信頼度が非常に高い。" },
-        "福岡": { water: "海水", flow: "あり", motor: "標準", trend: "捲り差し", desc: "特殊な水面形状。1コースが難しい場。" },
-        "唐津": { water: "淡水", flow: "なし", motor: "標準", trend: "イン有利", desc: "水面が広く、実力者が順当に勝つ場。" },
-        "大村": { water: "海水", flow: "あり", motor: "標準", trend: "イン絶対", desc: "元祖インの聖地。1コース勝率は日本一。" },
-        "default": { water: "---", flow: "---", motor: "---", trend: "要確認", desc: "会場を選択すると詳細データが表示されます。" }
-    };
-
-    let currentIdx = 0;
-
-    function init() {
-        fillSelect("track-keirin", Object.keys(keirinData).filter(k => k !== "default"));
-        fillSelect("track-boat", Object.keys(boatData).filter(k => k !== "default"));
-        fillSelect("race-keirin", Array.from({length: 12}, (_, i) => (i+1) + "R"));
-        fillSelect("race-boat", Array.from({length: 12}, (_, i) => (i+1) + "R"));
-        
-        updateClock(); 
-        setInterval(updateClock, 1000);
-        
-        // 少し遅らせて初期情報を表示（バグ対策）
-        setTimeout(updateInfo, 100);
-    }
-
-    function fillSelect(id, list) {
-        const el = document.getElementById(id);
-        el.innerHTML = "";
-        list.sort().forEach(t => {
-            const o = document.createElement("option"); o.value = t; o.textContent = t; el.appendChild(o);
-        });
-    }
-
-    function updateInfo() {
-        const type = currentIdx === 0 ? 'keirin' : 'boat';
-        const val = document.getElementById(`track-${type}`).value;
-        const grid = document.getElementById('info-grid');
-        const label = document.getElementById('strategy-label');
-        
-        if (type === 'keirin') {
-            const d = keirinData[val] || keirinData["default"];
-            label.innerText = "TRACK ANALYSIS";
-            grid.innerHTML = `
-                <div class="info-item"><b>バンク</b>${d.bank}</div>
-                <div class="info-item"><b>直線</b>${d.straight}</div>
-                <div class="info-item"><b>カント</b>${d.cant}</div>
-                <div class="info-item"><b>傾向</b>${d.trend}</div>
-                <div class="info-description">${d.desc}</div>`;
-        } else {
-            const d = boatData[val] || boatData["default"];
-            label.innerText = "WATER ANALYSIS";
-            grid.innerHTML = `
-                <div class="info-item"><b>水質</b>${d.water}</div>
-                <div class="info-item"><b>潮流</b>${d.flow}</div>
-                <div class="info-item"><b>モーター</b>${d.motor}</div>
-                <div class="info-item"><b>傾向</b>${d.trend}</div>
-                <div class="info-description">${d.desc}</div>`;
+    <script>
+        function updateK() {
+            const name = document.getElementById('k-select').value;
+            let d = ["400m", "54.0m", "31度", "万能", "標準的なバンク。逃げ、捲り、差しのバランスが良い。"];
+            if(name.match(/松戸|小田原|伊東|富山|奈良|前橋/)) d = ["333m", "38.2m", "29度", "先行", "短直線バンク。早めの仕掛けや逃げ切りが圧倒的に有利。"];
+            if(name.match(/大宮|宇都宮|高知|熊本/)) d = ["500m", "66.7m", "24度", "差し", "長直線バンク。最終直線での追い込み・突き抜けに注意。"];
+            if(name === "千葉") d = ["250m", "---", "30度", "脚力", "木製ピスト。純粋なスピードと持久力の勝負になる。"];
+            
+            document.getElementById('k1').innerHTML = `<b>${d[0]}</b>`;
+            document.getElementById('k2').innerHTML = `<b>${d[1]}</b>`;
+            document.getElementById('k3').innerHTML = `<b>${d[2]}</b>`;
+            document.getElementById('k4').innerHTML = `<b>${d[3]}</b>`;
+            document.getElementById('k-desc').innerText = d[4];
         }
-    }
 
-    function search(type) {
-        const track = document.getElementById(`track-${type}`).value;
-        const race = document.getElementById(`race-${type}`).value;
-        const query = encodeURIComponent(`${track}${type==='keirin'?'競輪':'ボートレース'} ${race} 予想`);
-        window.open(`https://twitter.com/search?q=${query}&f=live`, '_blank');
-    }
-
-    function updateClock() {
-        const now = new Date();
-        const y = now.getFullYear(); const m = now.getMonth() + 1; const d = now.getDate();
-        const day = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][now.getDay()];
-        document.getElementById("date").innerText = `${y}.${m}.${d} ${day}`;
-        document.getElementById("time").innerText = now.toLocaleTimeString('ja-JP', { hour12: false });
-    }
-
-    // スワイプイベントの修正
-    let startX = 0;
-    const canvas = document.getElementById("canvas");
-    window.addEventListener("touchstart", (e) => { startX = e.touches[0].pageX; });
-    window.addEventListener("touchend", (e) => {
-        let diff = startX - e.changedTouches[0].pageX;
-        if (Math.abs(diff) > 50) {
-            currentIdx = diff > 0 ? 1 : 0;
-            canvas.style.transform = `translateX(-${currentIdx * 50}%)`;
-            document.getElementById("dot0").classList.toggle("active", currentIdx === 0);
-            document.getElementById("dot1").classList.toggle("active", currentIdx === 1);
-            // 今日の修正ポイント：カード切り替え後に即座に情報を更新
-            updateInfo(); 
+        function updateB() {
+            const name = document.getElementById('b-select').value;
+            let d = ["淡水", "標準", "安定", "逃げ", "全国平均的な水面。1コースの信頼度は比較的高い。"];
+            if(name.match(/常滑|蒲郡|下関|若松|福岡|唐津|大村/)) d[0] = "海水";
+            if(name.match(/戸田|江戸川|平和島/)) { d[1] = "低い"; d[3] = "捲り"; d[4] = "インが弱く、カドからの捲りや差しが決まりやすい。"; }
+            if(name.match(/大村|徳山|芦屋/)) { d[1] = "最強"; d[3] = "イン"; d[4] = "イン逃げを軸にした組み立てが基本。鉄板レースが多い。"; }
+            
+            document.getElementById('b1').innerHTML = `<b>${d[0]}</b>`;
+            document.getElementById('b2').innerHTML = `<b>${d[1]}</b>`;
+            document.getElementById('b3').innerHTML = `<b>${d[2]}</b>`;
+            document.getElementById('b4').innerHTML = `<b>${d[3]}</b>`;
+            document.getElementById('b-desc').innerText = d[4];
         }
-    });
 
-    init();
-</script>
-    <div class="footer-section" style="margin-top: 40px; padding: 20px; border-top: 1px solid #eee; font-size: 12px; color: #666;">
-    <div class="ad-placeholder" style="width: 100%; height: 100px; background: #f9f9f9; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-        <span style="color: #999;">Sponsor / Advertisement</span>
-    </div>
-    
-    <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 10px;">
-        <a href="#" style="color: #666;">プライバシーポリシー</a>
-        <a href="#" style="color: #666;">利用規約</a>
-        <a href="#" style="color: #666;">お問い合わせ</a>
-    </div>
-    
-    <div id="note-section" style="background: #fff; padding: 15px; border-radius: 8px;">
-        <h4 style="margin: 0 0 10px 0;">Note / 運営からのお知らせ</h4>
-        <p style="margin: 0;">本サイトは競技データの正確性を期しておりますが、最終的な確認は主催者発表のものをご参照ください。</p>
-    </div>
-    
-    <p style="text-align: center; margin-top: 20px;">&copy; 2026 競技データNavi All Rights Reserved.</p>
-</div>
+        function tick() {
+            const n = new Date();
+            document.getElementById('date').innerText = n.toLocaleDateString();
+            document.getElementById('time').innerText = n.toTimeString().split(' ')[0];
+        }
+        setInterval(tick, 1000); tick();
+
+        let s = 0;
+        setInterval(() => {
+            s = 1 - s;
+            document.getElementById('slider').style.transform = `translateX(-${s * 50}%)`;
+            document.getElementById('dot0').classList.toggle('active', s === 0);
+            document.getElementById('dot1').classList.toggle('active', s === 1);
+        }, 7000);
+    </script>
 </body>
 </html>
