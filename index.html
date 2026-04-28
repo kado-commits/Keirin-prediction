@@ -15,7 +15,7 @@
         .keirin-card { border-top: 10px solid #ff7e5f; }
         .boat-card { border-top: 10px solid #0091ff; }
         h1 { font-size: 20px; color: #1a2a3a; margin-bottom: 25px; }
-        select { width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 15px; font-size: 16px; background-color: #fcfcfc; margin-bottom: 20px; }
+        select { width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 15px; font-size: 16px; background-color: #fcfcfc; margin-bottom: 20px; color: #333; -webkit-appearance: none; }
         .info-display-outer { width: 100%; text-align: center; border-radius: 20px; background: #f8f9fa; padding: 20px; box-sizing: border-box; min-height: 200px; }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; }
         .info-label { color: #aaa; font-size: 10px; font-weight: bold; display: block; }
@@ -44,28 +44,29 @@
                 <h1>🚴 競輪サーチ Pro</h1>
                 <select id="k-select" onchange="updateK()">
                     <option value="">-- 全43場から選択 --</option>
-                    <option value="函館">函館</option><option value="青森">青森</option><option value="いわき平">いわき平</option>
-                    <option value="弥彦">弥彦</option><option value="前橋">前橋</option><option value="取手">取手</option>
-                    <option value="宇都宮">宇都宮</option><option value="大宮">大宮</option><option value="西武園">西武園</option>
-                    <option value="京王閣">京王閣</option><option value="立川">立川</option><option value="松戸">松戸</option>
-                    <option value="千葉">千葉JP250</option><option value="川崎">川崎</option><option value="平塚">平塚</option>
-                    <option value="小田原">小田原</option><option value="伊東">伊東</option><option value="静岡">静岡</option>
-                    <option value="名古屋">名古屋</option><option value="岐阜">岐阜</option><option value="大垣">大垣</option>
-                    <option value="豊橋">豊橋</option><option value="富山">富山</option><option value="松阪">松阪</option>
-                    <option value="四日市">四日市</option><option value="福井">福井</option><option value="奈良">奈良</option>
-                    <option value="向日町">向日町</option><option value="和歌山">和歌山</option><option value="岸和田">岸和田</option>
-                    <option value="玉野">玉野</option><option value="広島">広島</option><option value="防府">防府</option>
-                    <option value="高松">高松</option><option value="小松島">小松島</option><option value="高知">高知</option>
-                    <option value="松山">松山</option><option value="小倉">小倉</option><option value="久留米">久留米</option>
-                    <option value="武雄">武雄</option><option value="佐世保">佐世保</option><option value="別府">別府</option><option value="熊本">熊本</option>
+                    <optgroup label="北日本">
+                        <option value="hakodate">函館</option><option value="aomori">青森</option><option value="iwaki">いわき平</option>
+                    </optgroup>
+                    <optgroup label="関東">
+                        <option value="yahiko">弥彦</option><option value="maebashi">前橋</option><option value="utsunomiya">宇都宮</option><option value="toride">取手</option><option value="omiya">大宮</option><option value="seibuen">西武園</option><option value="keio">京王閣</option><option value="tachikawa">立川</option>
+                    </optgroup>
+                    <optgroup label="南関東">
+                        <option value="matsudo">松戸</option><option value="chiba">千葉(250)</option><option value="kawasaki">川崎</option><option value="hiratsuka">平塚</option><option value="odawara">小田原</option><option value="ito">伊東</option><option value="shizuoka">静岡</option>
+                    </optgroup>
+                    <optgroup label="中部・近畿">
+                        <option value="nagoya">名古屋</option><option value="gifu">岐阜</option><option value="ogaki">大垣</option><option value="toyohashi">豊橋</option><option value="toyama">富山</option><option value="matsusaka">松阪</option><option value="yokkaichi">四日市</option><option value="fukui">福井</option><option value="nara">奈良</option><option value="mukomachi">向日町</option><option value="wakayama">和歌山</option><option value="kishiwada">岸和田</option>
+                    </optgroup>
+                    <optgroup label="中四国・九州">
+                        <option value="tamano">玉野</option><option value="hiroshima">広島</option><option value="hofu">防府</option><option value="takamatsu">高松</option><option value="komatsushima">小松島</option><option value="kochi">高知</option><option value="matsuyama">松山</option><option value="kokura">小倉</option><option value="kurume">久留米</option><option value="takeo">武雄</option><option value="sasebo">佐世保</option><option value="beppu">別府</option><option value="kumamoto">熊本</option>
+                    </optgroup>
                 </select>
                 <div class="info-display-outer">
-                    <div id="k-info" class="info-grid">
+                    <div class="info-grid">
                         <div class="info-item"><span class="info-label">周長</span><span id="k1">---</span></div>
                         <div class="info-item"><span class="info-label">直線</span><span id="k2">---</span></div>
                         <div class="info-item"><span class="info-label">カント</span><span id="k3">---</span></div>
                         <div class="info-item"><span class="info-label">有利</span><span id="k4">---</span></div>
-                        <div id="k-desc" class="info-description">場を選択すると特徴が表示されます。</div>
+                        <div id="k-desc" class="info-description">開催地を選択するとデータが表示されます。</div>
                     </div>
                 </div>
             </div>
@@ -74,15 +75,15 @@
                 <h1>🚤 ボートサーチ Pro</h1>
                 <select id="b-select" onchange="updateB()">
                     <option value="">-- 全24場から選択 --</option>
-                    <option value="桐生">桐生</option><option value="戸田">戸田</option><option value="江戸川">江戸川</option><option value="平和島">平和島</option><option value="多摩川">多摩川</option><option value="浜名湖">浜名湖</option><option value="蒲郡">蒲郡</option><option value="常滑">常滑</option><option value="津">津</option><option value="三国">三国</option><option value="びわこ">びわこ</option><option value="住之江">住之江</option><option value="尼崎">尼崎</option><option value="鳴門">鳴門</option><option value="丸亀">丸亀</option><option value="児島">児島</option><option value="宮島">宮島</option><option value="徳山">徳山</option><option value="下関">下関</option><option value="若松">若松</option><option value="芦屋">芦屋</option><option value="福岡">福岡</option><option value="唐津">唐津</option><option value="大村">大村</option>
+                    <option value="kiryu">桐生</option><option value="toda">戸田</option><option value="edogawa">江戸川</option><option value="heiwajima">平和島</option><option value="tamagawa">多摩川</option><option value="hamanako">浜名湖</option><option value="gamagori">蒲郡</option><option value="tokoname">常滑</option><option value="tsu">津</option><option value="mikuni">三国</option><option value="biwako">びわこ</option><option value="suminoe">住之江</option><option value="amagasaki">尼崎</option><option value="naruto">鳴門</option><option value="marugame">丸亀</option><option value="kojima">児島</option><option value="miyajima">宮島</option><option value="tokuyama">徳山</option><option value="shimonoseki">下関</option><option value="wakamatsu">若松</option><option value="ashiya">芦屋</option><option value="fukuoka">福岡</option><option value="karatsu">唐津</option><option value="omura">大村</option>
                 </select>
                 <div class="info-display-outer">
-                    <div id="b-info" class="info-grid">
+                    <div class="info-grid">
                         <div class="info-item"><span class="info-label">水質</span><span id="b1">---</span></div>
                         <div class="info-item"><span class="info-label">イン勝率</span><span id="b2">---</span></div>
                         <div class="info-item"><span class="info-label">風・潮</span><span id="b3">---</span></div>
                         <div class="info-item"><span class="info-label">特徴</span><span id="b4">---</span></div>
-                        <div id="b-desc" class="info-description">場を選択すると詳細な水面データが表示されます。</div>
+                        <div id="b-desc" class="info-description">開催地を選択するとデータが表示されます。</div>
                     </div>
                 </div>
             </div>
@@ -100,16 +101,86 @@
             <p style="margin:5px 0 0 0; font-size:10px; color:#777;">天候や風の影響を強く受ける競技です。最終確認は公式発表をご参照ください。</p>
         </div>
         <div class="legal-links"><span>Privacy Policy</span> | <span>Terms</span> | <span>Contact</span></div>
+        <p style="text-align:center; color:rgba(255,255,255,0.1); font-size:9px; margin-top:15px;">&copy; 2026 競技データNavi</p>
     </div>
 
     <script>
+        const keirinData = {
+            "hakodate":["400m","51.3m","30度","差し","海に近く、海風の影響を受けやすい。直線は標準的。"],
+            "aomori":["400m","58.9m","32度","差し","直線が長くカントもきついため、捲りや追い込みが有利。"],
+            "iwaki":["400m","62.7m","32度","差し","国内有数の長直線。建物に囲まれ風の影響は少ない。"],
+            "yahiko":["400m","63.1m","32度","差し","直線が非常に長い。冬場は降雪のため閉場。"],
+            "maebashi":["333m","46.7m","36度","逃げ","ドーム型で無風。超高速バンクとして有名。"],
+            "utsunomiya":["500m","63.3m","25度","差し","500mバンクの中では直線が短め。捲りが決まりやすい。"],
+            "toride":["400m","54.8m","31度","万能","クセが少なく、力通りの決着になりやすい。"],
+            "omiya":["500m","66.7m","24度","差し","日本一長い直線。追い込み勢の突き抜けが多発。"],
+            "seibuen":["400m","47.6m","30度","逃げ","直線が極端に短く、先行有利。イン粘りも有効。"],
+            "keio":["400m","51.5m","32度","差し","多摩川の風の影響を受ける。カントは標準的。"],
+            "tachikawa":["400m","58.0m","31度","差し","直線が長く、最終バックからの追い込みが決まりやすい。"],
+            "matsudo":["333m","38.2m","29度","逃げ","直線が短く先行選手が圧倒的に有利なバンク。"],
+            "chiba":["250m","---","30度","脚力","TIPSTAR DOME。ライン戦のない純粋な脚力勝負。"],
+            "kawasaki":["400m","58.0m","31度","差し","直線が長い。海風が入り込むと波乱含み。"],
+            "hiratsuka":["400m","54.2m","31度","差し","カントがキツく、捲りのスピードが乗りやすい。"],
+            "odawara":["333m","36.1m","35度","逃げ","日本屈指の短直線。先行、捲りが主導権。"],
+            "ito":["333m","46.6m","35度","逃げ","丘の上にあり風が強い。カントがあり捲りも効く。"],
+            "shizuoka":["400m","56.4m","30度","差し","富士山からの風（おろし）の影響を受ける。"],
+            "nagoya":["400m","58.8m","34度","差し","カントが非常にきつく、豪快な捲りが決まる。"],
+            "gifu":["400m","59.3m","31度","差し","直線が長く、地元選手が有利に立ち回る傾向。"],
+            "ogaki":["400m","56.2m","31度","差し","伊吹おろしの強風が勝敗を大きく左右する。"],
+            "toyohashi":["400m","56.2m","33度","差し","カントがあり捲りが効くが、直線も長い。"],
+            "toyama":["333m","43.0m","31度","逃げ","立山連峰からの風に注意。先行有利なサンサン。"],
+            "matsusaka":["400m","61.5m","34度","差し","直線がかなり長く、追い込み有利。"],
+            "yokkaichi":["400m","62.4m","32度","差し","海風の影響が強く、長直線で追い込み勢が台頭。"],
+            "fukui":["400m","52.8m","31度","逃げ","直線が短めで先行勢が踏ん張りやすい。"],
+            "nara":["333m","38.0m","33度","逃げ","直線が極端に短い。先行・イン粘りが基本。"],
+            "mukomachi":["400m","47.3m","30度","逃げ","直線が短く、先行有利な京都の名門バンク。"],
+            "wakayama":["400m","59.9m","32度","差し","海に近いが建物で遮られる。直線は長い。"],
+            "kishiwada":["400m","56.7m","30度","差し","クセがなく走りやすい。捲りが決まりやすい。"],
+            "tamano":["400m","47.9m","30度","逃げ","海沿いで風が強い。直線が短く先行有利。"],
+            "hiroshima":["400m","57.9m","30度","差し","瀬戸内海の風の影響。直線は長め。"],
+            "hofu":["333m","42.5m","34度","逃げ","カントがあるサンサン。先行選手が有利。"],
+            "takamatsu":["400m","54.4m","31度","差し","直線は標準的。風の向きに注意が必要。"],
+            "komatsushima":["400m","55.5m","30度","差し","海沿いでバックの風が強く、展開が変わりやすい。"],
+            "kochi":["500m","52.0m","24度","万能","500mだが直線が短く、先行捲りもよく決まる。"],
+            "matsuyama":["400m","58.5m","31度","差し","瀬戸内の風。直線が長く差しが決まる。"],
+            "kokura":["400m","56.9m","34度","差し","北九州メディアドーム。無風でハイスピード。"],
+            "kurume":["400m","50.7m","31度","万能","直線がやや短く、先行も追い込みも効く。"],
+            "takeo":["400m","64.4m","30度","差し","日本一長い直線。追い込み勢には絶好の舞台。"],
+            "sasebo":["400m","40.2m","31度","逃げ","400mだが直線は333並みに短く先行有利。"],
+            "beppu":["400m","59.9m","33度","差し","温泉地近くで風が舞う。直線が長く差し有利。"],
+            "kumamoto":["500m","60.3m","28度","差し","現在改修中だが、直線が長く力勝負になる。"]
+        };
+
+        const boatData = {
+            "kiryu":["淡水","中","安定","1マーク","赤城おろしの風が吹くと、捲りが決まりやすくなる。"],
+            "toda":["淡水","低","安定","捲り","日本一狭い水面。イン勝率が低く、角捲りが主役。"],
+            "edogawa":["汽水","低","強風","難水面","河川を利用。潮と風がぶつかり、日本一の難水面。"],
+            "heiwajima":["海水","低","風あり","捲り","建物に囲まれ風が回る。高配当が飛び出しやすい。"],
+            "tamagawa":["淡水","中","安定","イン","日本一の静水面。スピード勝負になりやすい。"],
+            "hamanako":["汽水","中","広大","イン","全国一広い水面。力通りの決着になりやすい。"],
+            "gamagori":["海水","高","安定","イン","ナイターの聖地。イン勝率が高く安定している。"],
+            "tokoname":["海水","高","風あり","イン","インが強いが、強風時は捲り差しも決まる。"],
+            "tsu":["海水","中","強風","万能","鈴鹿おろしが吹くと荒れる。イン過信は禁物。"],
+            "mikuni":["淡水","高","安定","イン","イン勝率が高く、落ち着いた水面コンディション。"],
+            "biwako":["淡水","低","波あり","捲り","標高が高く出力が落ちる。観光船の波も影響。"],
+            "suminoe":["淡水","高","安定","イン","ボートレースの聖地。インの信頼度は非常に高い。"],
+            "amagasaki":["淡水","高","安定","イン","静水面。センターからの自在戦も決まる。"],
+            "naruto":["海水","中","潮流","捲り","1マークが狭く、インが窮屈なため捲りやすい。"],
+            "marugame":["海水","高","潮流","イン","潮の満ち引きで傾向が変わる。ナイター。"],
+            "kojima":["海水","中","潮流","イン","潮の流れがある。干潮時はイン逃げが有利。"],
+            "miyajima":["海水","中","潮流","万能","潮の干満差が激しく、スタートが難しい。"],
+            "tokuyama":["海水","最高","安定","イン","全国トップクラスのイン勝率を誇る。"],
+            "shimonoseki":["海水","高","潮流","イン","瀬戸内の潮。ナイター開催でインが強い。"],
+            "wakamatsu":["海水","高","潮流","イン","洞海湾に面する。インとカドの攻防が激しい。"],
+            "ashiya":["淡水","最高","安定","イン","モーニング開催が多く、インが圧倒的に強い。"],
+            "fukuoka":["海水","低","潮流","難","うねりが発生しやすく、インが苦戦する水面。"],
+            "karatsu":["淡水","高","安定","イン","広大な水面で、インが力を発揮しやすい。"],
+            "omura":["海水","最高","安定","イン","イン勝率日本一。絶対的な軸として信頼。"]
+        };
+
         function updateK() {
-            const name = document.getElementById('k-select').value;
-            let d = ["400m", "54.0m", "31度", "万能", "標準的なバンク。逃げ、捲り、差しのバランスが良い。"];
-            if(name.match(/松戸|小田原|伊東|富山|奈良|前橋/)) d = ["333m", "38.2m", "29度", "先行", "短直線バンク。早めの仕掛けや逃げ切りが圧倒的に有利。"];
-            if(name.match(/大宮|宇都宮|高知|熊本/)) d = ["500m", "66.7m", "24度", "差し", "長直線バンク。最終直線での追い込み・突き抜けに注意。"];
-            if(name === "千葉") d = ["250m", "---", "30度", "脚力", "木製ピスト。純粋なスピードと持久力の勝負になる。"];
-            
+            const v = document.getElementById('k-select').value;
+            const d = keirinData[v] || ["---","---","---","---","開催地を選択してください。"];
             document.getElementById('k1').innerHTML = `<b>${d[0]}</b>`;
             document.getElementById('k2').innerHTML = `<b>${d[1]}</b>`;
             document.getElementById('k3').innerHTML = `<b>${d[2]}</b>`;
@@ -118,12 +189,8 @@
         }
 
         function updateB() {
-            const name = document.getElementById('b-select').value;
-            let d = ["淡水", "標準", "安定", "逃げ", "全国平均的な水面。1コースの信頼度は比較的高い。"];
-            if(name.match(/常滑|蒲郡|下関|若松|福岡|唐津|大村/)) d[0] = "海水";
-            if(name.match(/戸田|江戸川|平和島/)) { d[1] = "低い"; d[3] = "捲り"; d[4] = "インが弱く、カドからの捲りや差しが決まりやすい。"; }
-            if(name.match(/大村|徳山|芦屋/)) { d[1] = "最強"; d[3] = "イン"; d[4] = "イン逃げを軸にした組み立てが基本。鉄板レースが多い。"; }
-            
+            const v = document.getElementById('b-select').value;
+            const d = boatData[v] || ["---","---","---","---","開催地を選択してください。"];
             document.getElementById('b1').innerHTML = `<b>${d[0]}</b>`;
             document.getElementById('b2').innerHTML = `<b>${d[1]}</b>`;
             document.getElementById('b3').innerHTML = `<b>${d[2]}</b>`;
@@ -133,7 +200,8 @@
 
         function tick() {
             const n = new Date();
-            document.getElementById('date').innerText = n.toLocaleDateString();
+            const w = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+            document.getElementById('date').innerText = `${n.getFullYear()}.${n.getMonth()+1}.${n.getDate()} ${w[n.getDay()]}`;
             document.getElementById('time').innerText = n.toTimeString().split(' ')[0];
         }
         setInterval(tick, 1000); tick();
@@ -144,7 +212,7 @@
             document.getElementById('slider').style.transform = `translateX(-${s * 50}%)`;
             document.getElementById('dot0').classList.toggle('active', s === 0);
             document.getElementById('dot1').classList.toggle('active', s === 1);
-        }, 7000);
+        }, 8000);
     </script>
 </body>
 </html>
