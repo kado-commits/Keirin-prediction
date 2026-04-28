@@ -92,7 +92,7 @@
 </footer>
 
 <script>
-    // サービスワーカーの登録
+    // サービスワーカーの登録（PWA用）
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js')
@@ -137,9 +137,18 @@
         }, 12000);
     }
 
+    // 選択肢を生成する関数（レース番号の並び順を修正済み）
     function fillSelect(id, list) {
         const el = document.getElementById(id);
-        list.sort().forEach(t => {
+        
+        // レース番号（1R, 2R...）の場合は数字の大きさで並び替える
+        if (id.includes('race')) {
+            list.sort((a, b) => parseInt(a) - parseInt(b));
+        } else {
+            list.sort(); // 会場名などは五十音順
+        }
+
+        list.forEach(t => {
             const o = document.createElement("option"); o.value = t; o.textContent = t; el.appendChild(o);
         });
     }
